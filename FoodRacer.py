@@ -28,7 +28,7 @@ from pygame.locals import (
 # global variables
 SCREEN_WIDTH = 1600
 SCREEN_HEIGHT = 1200
-BANANA = 'bananaman.png'
+RACERS = {'BANANA': 'bananaman.png'}
 
 import Racers
 import Obstacles
@@ -57,7 +57,7 @@ def main():
     # background.blit(text, textpos)
     
     # create racers
-    player1 = Racers.Player(BANANA)
+    player1 = Racers.Player(RACERS['BANANA'])
     
     # create obstacles
     obstacles = pygame.sprite.Group()
