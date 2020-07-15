@@ -35,10 +35,10 @@ def load_png(name):
     return image, image.get_rect()
 
 
-class Poop(pygame.sprite.Sprite):
-    def __init__(self):
-        super(Poop, self).__init__()
-        self.surf, self.rect = load_png('bannanaman.png')
+class Player(pygame.sprite.Sprite):
+    def __init__(self, selection):
+        super(Player, self).__init__()
+        self.surf, self.rect = load_png(selection)
         self.surf = pygame.transform.scale(self.surf,(100,100))
         self.rect = self.surf.get_rect(
             center = (SCREEN_WIDTH/2, SCREEN_HEIGHT - 100)
