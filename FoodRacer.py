@@ -29,6 +29,7 @@ from pygame.locals import (
 SCREEN_WIDTH = 1600
 SCREEN_HEIGHT = 1200
 RACERS = {'BANANA': 'bananaman.png'}
+BACKGROUNDS = {'CANDY': 'candymap.png'}
 
 import Racers
 import Obstacles
@@ -43,10 +44,19 @@ def main():
     ADDOBSTACLE = pygame.USEREVENT + 1
     pygame.time.set_timer(ADDOBSTACLE, 1000)
     
-    # fill background
-    background = pygame.Surface(screen.get_size())
-    background = background.convert()
-    background.fill((250, 250, 250))
+    # # fill background
+    # background = pygame.Surface(screen.get_size())
+    # background = background.convert()
+    # background.fill((250, 250, 250))
+    
+    background = pygame.Surface((13000, 13000))
+    background_tile = pygame.image.load(os.path.join('data', BACKGROUNDS['CANDY']))
+    background_tile = background_tile.convert_alpha()
+    
+    for y in range(0, 13000, 1300):
+        for x in range(0, 13000, 1300):
+            background.blit(background_tile, (x, y))
+    pygame.display.flip()
     
     # # display some text
     # font = pygame.font.Font(None, 100)
@@ -104,7 +114,6 @@ def main():
         for obstacle in obstacles:
             offset = (player1.rect.x - obstacle.rect.x), (player1.rect.y - obstacle.rect.y)
             if obstacle.mask.overlap(player1.mask, offset):
-                # poop[0].kill()
                 # this will need a game over screen instead
                 running = False
         pygame.display.flip()

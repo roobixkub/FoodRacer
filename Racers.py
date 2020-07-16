@@ -6,7 +6,6 @@ Created on Sat Jul 11 08:00:56 2020
 """
 
 import pygame
-import os
 from pygame.locals import (
         K_UP,
         K_DOWN,
@@ -18,22 +17,7 @@ from pygame.locals import (
     )
 
 from FoodRacer import SCREEN_WIDTH, SCREEN_HEIGHT
-
-
-def load_png(name):
-    """load image and return an image object"""
-    fullname = os.path.join('data', name)
-    try:
-        image = pygame.image.load(fullname)
-        if image.get_alpha() is None:
-            image = image.convert()
-        else:
-            image = image.convert_alpha()
-    except pygame.error as message:
-        print ('Cannot load image:' + fullname)
-        raise SystemExit (message)
-    return image, image.get_rect()
-
+from Tools import load_png
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, selection):
