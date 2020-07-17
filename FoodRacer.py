@@ -26,13 +26,13 @@ from pygame.locals import (
 
 
 # global variables
-SCREEN_WIDTH = 1600
-SCREEN_HEIGHT = 1200
 RACERS = {'BANANA': 'bananaman.png'}
 BACKGROUNDS = {'CANDY': 'candymap.png'}
 
+from Config import SCREEN_WIDTH, SCREEN_HEIGHT
 import Racers
 import Obstacles
+import Track
 
 def main():
     # initialize the screen
@@ -49,14 +49,33 @@ def main():
     # background = background.convert()
     # background.fill((250, 250, 250))
     
+    # set background
     background = pygame.Surface((13000, 13000))
     background_tile = pygame.image.load(os.path.join('data', BACKGROUNDS['CANDY']))
-    background_tile = background_tile.convert_alpha()
+    background_tile = background_tile.convert()
     
     for y in range(0, 13000, 1300):
         for x in range(0, 13000, 1300):
             background.blit(background_tile, (x, y))
-    pygame.display.flip()
+    #pygame.display.flip()
+    
+    # Track set up
+    test_track = Track.Build_test()
+    track = pygame.Surface((6500, 6500), pygame.SRCALPHA)
+    y_grid = 0
+    x_grid = 0
+    for y in range(0, 6500, 650):
+        for x in range(0, 6500, 650):
+            try:
+                track.blit(test_track[y_grid][x_grid], (x, y))
+                x_grid += 1
+            except TypeError:
+                break
+        y_grid += 1
+        x_grid = 0
+        
+    background.blit(track, (0, 0))
+    #pygame.display.flip()
     
     # # display some text
     # font = pygame.font.Font(None, 100)
@@ -77,7 +96,7 @@ def main():
     all_sprites.add(player1)
     
     # blit everything to the screen
-    pygame.display.flip()
+    #pygame.display.flip()
     
     # set game clock
     clock = pygame.time.Clock()
@@ -108,6 +127,7 @@ def main():
         obstacles.update()
         # draw screen and update display
         screen.blit(background, (0, 0))
+        screen.blit(track, (0, 0))
         for entity in all_sprites:
             screen.blit(entity.surf, entity.rect)
             

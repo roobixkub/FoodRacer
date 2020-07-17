@@ -9,7 +9,7 @@ Created on Sat Jul 11 09:08:55 2020
 import random
 import pygame
 
-from FoodRacer import SCREEN_WIDTH, SCREEN_HEIGHT
+from Config import SCREEN_WIDTH, SCREEN_HEIGHT
 from Tools import load_png
 
 class Obstacle(pygame.sprite.Sprite):

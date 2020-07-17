@@ -16,7 +16,7 @@ from pygame.locals import (
         QUIT
     )
 
-from FoodRacer import SCREEN_WIDTH, SCREEN_HEIGHT
+from Config import SCREEN_WIDTH, SCREEN_HEIGHT
 from Tools import load_png
 
 class Player(pygame.sprite.Sprite):
