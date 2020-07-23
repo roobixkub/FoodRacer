@@ -6,14 +6,13 @@ Created on Fri Jul 10 13:12:26 2020
 """
 
 
-# imports
-import sys
-import random
-import math
+""" general imports """
+# import sys
+# import random
+# import math
 import os
-import getopt
+# import getopt
 import pygame
-#from socket import *
 from pygame.locals import (
     K_UP,
     K_DOWN,
@@ -21,35 +20,40 @@ from pygame.locals import (
     K_RIGHT,
     K_ESCAPE,
     KEYDOWN,
+    KEYUP,
     QUIT
 )
 
 
-# global variables
+""" global variables """
 RACERS = {'BANANA': 'bananaman.png'}
 BACKGROUNDS = {'CANDY': 'candymap.png'}
 
+""" unique imports """
 from Config import SCREEN_WIDTH, SCREEN_HEIGHT
+#from Tools import load_png
 import Racers
-import Obstacles
+#import Obstacles
 import Track
 
+
+class Background(pygame.sprite.Sprite):
+    def __init__(self, surface, location):
+        pygame.sprite.Sprite.__init__(self)
+        self.surf = surface
+        self.rect = self.surf.get_rect(topleft=location)
+        
+""" main game function """
 def main():
-    # initialize the screen
-    pygame.init()
+    """ initialize the screen """
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-    pygame.display.set_caption('Food Racer screen')
+    pygame.display.set_caption('Food Racer')
     
-    # create obstacles add event
-    ADDOBSTACLE = pygame.USEREVENT + 1
-    pygame.time.set_timer(ADDOBSTACLE, 1000)
+    """ create obstacles add event """
+    # ADDOBSTACLE = pygame.USEREVENT + 1
+    # pygame.time.set_timer(ADDOBSTACLE, 1000)
     
-    # # fill background
-    # background = pygame.Surface(screen.get_size())
-    # background = background.convert()
-    # background.fill((250, 250, 250))
-    
-    # set background
+    """ set background """
     background = pygame.Surface((13000, 13000))
     background_tile = pygame.image.load(os.path.join('data', BACKGROUNDS['CANDY']))
     background_tile = background_tile.convert()
@@ -57,87 +61,102 @@ def main():
     for y in range(0, 13000, 1300):
         for x in range(0, 13000, 1300):
             background.blit(background_tile, (x, y))
-    #pygame.display.flip()
     
-    # Track set up
-    test_track = Track.Build_test()
-    track = pygame.Surface((6500, 6500), pygame.SRCALPHA)
-    y_grid = 0
-    x_grid = 0
-    for y in range(0, 6500, 650):
-        for x in range(0, 6500, 650):
-            try:
-                track.blit(test_track[y_grid][x_grid], (x, y))
-                x_grid += 1
-            except TypeError:
-                break
-        y_grid += 1
-        x_grid = 0
-        
-    background.blit(track, (0, 0))
-    #pygame.display.flip()
+    background = Background(background, [0, 0])        
+
+    """ Track set up """
+    # test_track = Track.Build_test()[0]
+    # track_group = pygame.sprite.Group()
+    # track = pygame.Surface((6500, 6500), pygame.SRCALPHA)
+    # y_grid = 0
+    # x_grid = 0
+    # for y in range(0, 6500, 650):
+    #     for x in range(0, 6500, 650):
+    #         try:
+    #             section = test_track[y_grid][x_grid]
+    #             track.blit(section, (x, y))
+    #             track_group.add(section)
+    #             x_grid += 1
+    #         except TypeError:
+    #             break
+    #     y_grid += 1
+    #     x_grid = 0
+
+    # background.blit(test_track, (0, 0))
+
     
-    # # display some text
-    # font = pygame.font.Font(None, 100)
-    # text = font.render("Food Racer!!!", 1, (10, 10, 10))
-    # textpos = text.get_rect()
-    # textpos.centerx = background.get_rect().centerx
-    # textpos.centery = background.get_rect().centery
-    # background.blit(text, textpos)
-    
-    # create racers
-    player1 = Racers.Player(RACERS['BANANA'])
-    
-    # create obstacles
-    obstacles = pygame.sprite.Group()
-    
-    # create sprite groups
+
+    """ create obstacles """
+    # obstacles = pygame.sprite.Group()
+
+    """ create sprite groups """
     all_sprites = pygame.sprite.Group()
-    all_sprites.add(player1)
+    #all_sprites.add(player1)
+    for track in Track.Build_test()[1]:
+        all_sprites.add(track)
     
-    # blit everything to the screen
-    #pygame.display.flip()
+    """ create racers """
+    player1 = Racers.Player(RACERS['BANANA'], Track.Build_test()[0], Track.Build_test()[1], all_sprites)
     
-    # set game clock
+    """ set game clock """
     clock = pygame.time.Clock()
-    
-    # event loop
+
+    """ gameplay loop """
     running = True
     while running:     
-        # make sure game doesn't run more than 60 fps
+        """ make sure game doesn't run more than 60 fps """
         clock.tick(60)
-        # event handeler
+        """ event handeler """
         for event in pygame.event.get():
             if event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
-                    # this will need to be a pause menu instead of exit
+                    """ this will need to be a pause menu instead of exit """
                     running = False
+                elif event.key == pygame.K_RIGHT:
+                    player1.vel.x = 5
+                elif event.key == pygame.K_LEFT:
+                    player1.vel.x = -5
+                elif event.key == pygame.K_UP:
+                    player1.vel.y = -5
+                elif event.key == pygame.K_DOWN:
+                    player1.vel.y = 5
+            elif event.type == KEYUP:
+                if event.key == pygame.K_RIGHT and player1.vel.x > 0:
+                    player1.vel.x = 0
+                elif event.key == pygame.K_LEFT and player1.vel.x < 0:
+                    player1.vel.x = 0
+                elif event.key == pygame.K_UP and player1.vel.y < 0:
+                    player1.vel.y = 0
+                elif event.key == pygame.K_DOWN and player1.vel.y > 0:
+                    player1.vel.y = 0
             elif event.type == QUIT:
                 running = False
-            elif event.type == ADDOBSTACLE:
-                # create a new obstacle and add it to sprite groups
-                new_obstacle = Obstacles.Obstacle()
-                obstacles.add(new_obstacle)
-                all_sprites.add(new_obstacle)
-        # get all the pressed keys
-        pressed_keys = pygame.key.get_pressed()
-        # update the racers based on key presses
-        player1.update(pressed_keys)
-        # update obstacles
-        obstacles.update()
-        # draw screen and update display
-        screen.blit(background, (0, 0))
-        screen.blit(track, (0, 0))
-        for entity in all_sprites:
-            screen.blit(entity.surf, entity.rect)
-            
-        for obstacle in obstacles:
-            offset = (player1.rect.x - obstacle.rect.x), (player1.rect.y - obstacle.rect.y)
-            if obstacle.mask.overlap(player1.mask, offset):
-                # this will need a game over screen instead
-                running = False
+            """ add random obstacles via timed event """
+            # elif event.type == ADDOBSTACLE:
+            #     """ create a new obstacle and add it to sprite groups """
+            #     new_obstacle = Obstacles.Obstacle()
+            #     obstacles.add(new_obstacle)
+            #     all_sprites.add(new_obstacle)
+        """ get all the pressed keys """
+        # pressed_keys = pygame.key.get_pressed()
+        """ update the racers based on key presses """
+        # player1.update(pressed_keys)
+        """ update obstacles """
+        # obstacles.update()
+        all_sprites.update()
+        """ draw screen and update display """
+        screen.blit(background.surf, background.rect)
+        # screen.blit(test_track, (0, 0))
+        for sprite in all_sprites:
+            screen.blit(sprite.image, sprite.rect.topleft+player1.camera)
+        """ collision detection and handling """   
+        # for obstacle in obstacles:
+        #     offset = (player1.rect.x - obstacle.rect.x), (player1.rect.y - obstacle.rect.y)
+        #     if obstacle.mask.overlap(player1.mask, offset):
+        #       """ this will need a game over screen instead """
+        #       running = False
         pygame.display.flip()
-    pygame.quit()
+    
 
 
 
@@ -146,4 +165,7 @@ def main():
 
 
     
-if __name__ == '__main__': main()
+if __name__ == '__main__': 
+    pygame.init()
+    main()
+    pygame.quit()
