@@ -6,18 +6,8 @@ Created on Sat Jul 11 08:00:56 2020
 """
 
 import pygame
-# from pygame.locals import (
-#         K_UP,
-#         K_DOWN,
-#         K_LEFT,
-#         K_RIGHT,
-#         K_ESCAPE,
-#         KEYDOWN,
-#         QUIT
-#     )
 from pygame.math import Vector2
 
-# from Config import SCREEN_WIDTH, SCREEN_HEIGHT
 from Tools import load_png
 
 class Player(pygame.sprite.Sprite):
@@ -32,29 +22,10 @@ class Player(pygame.sprite.Sprite):
         self.pos = Vector2(pos)
         """ wall collision """
         self.track = track
-        self.camera = Vector2(0, 0)
+        self.camera = Vector2(pos)
         
 
     def update(self):
-        """ movement independent of display """
-        # if pressed_keys[K_UP]:
-        #     self.rect.move_ip(0, -5)
-        # if pressed_keys[K_DOWN]:
-        #     self.rect.move_ip(0, 5)
-        # if pressed_keys[K_LEFT]:
-        #     self.rect.move_ip(-5, 0)
-        # if pressed_keys[K_RIGHT]:
-        #     self.rect.move_ip(5, 0)
-            
-        # if self.rect.left < 0:
-        #     self.rect.left = 0
-        # if self.rect.right > SCREEN_WIDTH:
-        #     self.rect.right = SCREEN_WIDTH
-        # if self.rect.top <= 0:
-        #     self.rect.top = 0
-        # if self.rect.bottom >= SCREEN_HEIGHT:
-        #     self.rect.bottom = SCREEN_HEIGHT
-        
         """ display centered on player """
         """ change camera position when moving """
         self.camera -= self.vel
@@ -63,25 +34,25 @@ class Player(pygame.sprite.Sprite):
         self.rect.centerx = self.pos.x
         
         """ change the rect and self.pos coordinates from collision """
-        # for track in self.track:
         if not pygame.sprite.spritecollide(self, self.track, False):
-            if self.vel.x > 0:
-                self.rect.right = self.track.rect.right
-            elif self.vel.x < 0:
-                self.rect.left = self.track.rect.left
-            self.pos.x = self.rect.centerx
-            self.camera.x += self.vel.x
+            for track in self.track:
+                if self.vel.x > 0:
+                    self.rect.right = track.rect.right
+                elif self.vel.x < 0:
+                    self.rect.left = track.rect.left
+                self.pos.x = self.rect.centerx
+                self.camera.x += self.vel.x
         
         """ Vertical movement """
         self.pos.y += self.vel.y
         self.rect.centery = self.pos.y
         
         """ change the rect and self.pos coordinates from colision """
-        # for track in self.track: 
         if not pygame.sprite.spritecollide(self, self.track, False):
-            if self.vel.y > 0:
-                self.rect.bottom = self.track.rect.bottom
-            elif self.vel.y < 0:
-                self.rect.top = self.track.rect.top
-            self.pos.y = self.rect.centery
-            self.camera.y += self.vel.y
+            for track in self.track: 
+                if self.vel.y > 0:
+                    self.rect.bottom = track.rect.bottom
+                elif self.vel.y < 0:
+                    self.rect.top = track.rect.top
+                self.pos.y = self.rect.centery
+                self.camera.y += self.vel.y

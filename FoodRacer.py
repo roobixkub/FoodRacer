@@ -7,11 +7,7 @@ Created on Fri Jul 10 13:12:26 2020
 
 
 """ general imports """
-# import sys
-# import random
-# import math
 import os
-# import getopt
 import pygame
 from pygame.locals import (
     K_UP,
@@ -63,28 +59,6 @@ def main():
             background.blit(background_tile, (x, y))
     
     background = Background(background, [0, 0])        
-
-    """ Track set up """
-    # test_track = Track.Build_test()[0]
-    # track_group = pygame.sprite.Group()
-    # track = pygame.Surface((6500, 6500), pygame.SRCALPHA)
-    # y_grid = 0
-    # x_grid = 0
-    # for y in range(0, 6500, 650):
-    #     for x in range(0, 6500, 650):
-    #         try:
-    #             section = test_track[y_grid][x_grid]
-    #             track.blit(section, (x, y))
-    #             track_group.add(section)
-    #             x_grid += 1
-    #         except TypeError:
-    #             break
-    #     y_grid += 1
-    #     x_grid = 0
-
-    # background.blit(test_track, (0, 0))
-
-    
 
     """ create obstacles """
     # obstacles = pygame.sprite.Group()
