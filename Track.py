@@ -14,7 +14,7 @@ class Right_turn_up(pygame.sprite.Sprite):
     def __init__(self, x, y, *groups):
         super().__init__(*groups)
         self.image = pygame.image.load(os.path.join('data', 'trackturn.png')).convert()
-        self.image = pygame.transform.scale(self.image,(650,650))
+        self.image = pygame.transform.scale(self.image,(900,900))
         self.image.set_colorkey(self.image.get_at((0,0)))
         self.rect = self.image.get_rect(topleft = (x, y))
         
@@ -22,7 +22,7 @@ class Left_turn_up(pygame.sprite.Sprite):
     def __init__(self, x, y, *groups):
         super().__init__(*groups)
         self.image = pygame.image.load(os.path.join('data', 'trackturn.png')).convert()
-        self.image = pygame.transform.scale(self.image,(650,650))
+        self.image = pygame.transform.scale(self.image,(900,900))
         self.image.set_colorkey(self.image.get_at((0,0)))
         self.image = pygame.transform.rotate(self.image,270)
         self.rect = self.image.get_rect(topleft = (x, y))
@@ -31,7 +31,7 @@ class Right_turn_down(pygame.sprite.Sprite):
     def __init__(self, x, y, *groups):
         super().__init__(*groups)
         self.image = pygame.image.load(os.path.join('data', 'trackturn.png')).convert()
-        self.image = pygame.transform.scale(self.image,(650,650))
+        self.image = pygame.transform.scale(self.image,(900,900))
         self.image.set_colorkey(self.image.get_at((0,0)))
         self.image = pygame.transform.rotate(self.image,180)
         self.rect = self.image.get_rect(topleft = (x, y))
@@ -40,7 +40,7 @@ class Left_turn_down(pygame.sprite.Sprite):
     def __init__(self, x, y, *groups):
         super().__init__(*groups)
         self.image = pygame.image.load(os.path.join('data', 'trackturn.png')).convert()
-        self.image = pygame.transform.scale(self.image,(650,650))
+        self.image = pygame.transform.scale(self.image,(900,900))
         self.image.set_colorkey(self.image.get_at((0,0)))
         self.image = pygame.transform.rotate(self.image,90)
         self.rect = self.image.get_rect(topleft = (x, y))
@@ -49,14 +49,14 @@ class Vert_track(pygame.sprite.Sprite):
     def __init__(self, x, y, *groups):
         super().__init__(*groups)
         self.image, self.rect = load_png('track.png')
-        self.image = pygame.transform.scale(self.image,(400,650))
+        self.image = pygame.transform.scale(self.image,(900,900))
         self.rect = self.image.get_rect(topleft = (x, y))
         
 class Horiz_track(pygame.sprite.Sprite):
     def __init__(self, x, y, *groups):
         super().__init__(*groups)
         self.image, self.rect = load_png('track.png')
-        self.image = pygame.transform.scale(self.image,(400,650))
+        self.image = pygame.transform.scale(self.image,(900,900))
         self.image = pygame.transform.rotate(self.image,90)
         self.rect = self.image.get_rect(topleft = (x, y))
         
@@ -74,16 +74,16 @@ def Build_test():
             [Vert_track, None, None, None, None, None, None, None, None, Vert_track], 
             [Left_turn_down, Horiz_track, Horiz_track, Horiz_track, Horiz_track, Horiz_track, Horiz_track, Horiz_track, Horiz_track, Right_turn_down]
         ]
-    start = (400, 400)
+    start = (8550, 2000)
     
     track_group = pygame.sprite.Group()
     y_grid = 0
     x_grid = 0
-    for y in range(0, 6500, 650):
-        for x in range(0, 6500, 650):
+    for y in range(0, 9000, 900):
+        for x in range(0, 9000, 900):
             section = test_track[y_grid][x_grid]
             if section != None:
-                track_group.add(section(x, y))
+                track_group.add(section(x - start[0], y - start[1]))
                 x_grid += 1
             else:
                 x_grid += 1

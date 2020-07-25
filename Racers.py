@@ -19,7 +19,7 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center = pos)
         self.mask = pygame.mask.from_surface(self.image)
         self.vel = Vector2(0, 0)
-        self.pos = Vector2(pos)
+        self.pos = Vector2(0, 0)
         """ wall collision """
         self.track = track
         self.camera = Vector2(pos)
@@ -34,25 +34,25 @@ class Player(pygame.sprite.Sprite):
         self.rect.centerx = self.pos.x
         
         """ change the rect and self.pos coordinates from collision """
-        if not pygame.sprite.spritecollide(self, self.track, False):
-            for track in self.track:
-                if self.vel.x > 0:
-                    self.rect.right = track.rect.right
-                elif self.vel.x < 0:
-                    self.rect.left = track.rect.left
-                self.pos.x = self.rect.centerx
-                self.camera.x += self.vel.x
+        # if not pygame.sprite.spritecollide(self, self.track, False):
+        #     for track in self.track:
+        #         if self.vel.x > 0:
+        #             self.rect.right = track.rect.right
+        #         elif self.vel.x < 0:
+        #             self.rect.left = track.rect.left
+        #         self.pos.x = self.rect.centerx
+        #         self.camera.x += self.vel.x
         
         """ Vertical movement """
         self.pos.y += self.vel.y
         self.rect.centery = self.pos.y
         
         """ change the rect and self.pos coordinates from colision """
-        if not pygame.sprite.spritecollide(self, self.track, False):
-            for track in self.track: 
-                if self.vel.y > 0:
-                    self.rect.bottom = track.rect.bottom
-                elif self.vel.y < 0:
-                    self.rect.top = track.rect.top
-                self.pos.y = self.rect.centery
-                self.camera.y += self.vel.y
+        # if not pygame.sprite.spritecollide(self, self.track, False):
+        #     for track in self.track: 
+        #         if self.vel.y > 0:
+        #             self.rect.bottom = track.rect.bottom
+        #         elif self.vel.y < 0:
+        #             self.rect.top = track.rect.top
+        #         self.pos.y = self.rect.centery
+        #         self.camera.y += self.vel.y

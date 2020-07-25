@@ -70,7 +70,8 @@ def main():
         all_sprites.add(track)
     
     """ create racers """
-    player1 = Racers.Player(RACERS['BANANA'], Track.Build_test()[0], Track.Build_test()[1], all_sprites)
+    # player1 = Racers.Player(RACERS['BANANA'], Track.Build_test()[0], Track.Build_test()[1], all_sprites)
+    player1 = Racers.Player(RACERS['BANANA'], (SCREEN_WIDTH/2, SCREEN_HEIGHT/2), Track.Build_test()[1], all_sprites)
     
     """ set game clock """
     clock = pygame.time.Clock()
@@ -87,13 +88,13 @@ def main():
                     """ this will need to be a pause menu instead of exit """
                     running = False
                 elif event.key == pygame.K_RIGHT:
-                    player1.vel.x = 5
+                    player1.vel.x = 10
                 elif event.key == pygame.K_LEFT:
-                    player1.vel.x = -5
+                    player1.vel.x = -10
                 elif event.key == pygame.K_UP:
-                    player1.vel.y = -5
+                    player1.vel.y = -10
                 elif event.key == pygame.K_DOWN:
-                    player1.vel.y = 5
+                    player1.vel.y = 10
             elif event.type == KEYUP:
                 if event.key == pygame.K_RIGHT and player1.vel.x > 0:
                     player1.vel.x = 0
