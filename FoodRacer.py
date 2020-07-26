@@ -27,7 +27,6 @@ BACKGROUNDS = {'CANDY': 'candymap.png'}
 
 """ unique imports """
 from Config import SCREEN_WIDTH, SCREEN_HEIGHT
-#from Tools import load_png
 import Racers
 #import Obstacles
 import Track
@@ -65,12 +64,10 @@ def main():
 
     """ create sprite groups """
     all_sprites = pygame.sprite.Group()
-    #all_sprites.add(player1)
     for track in Track.Build_test()[1]:
         all_sprites.add(track)
     
     """ create racers """
-    # player1 = Racers.Player(RACERS['BANANA'], Track.Build_test()[0], Track.Build_test()[1], all_sprites)
     player1 = Racers.Player(RACERS['BANANA'], (SCREEN_WIDTH/2, SCREEN_HEIGHT/2), Track.Build_test()[1], all_sprites)
     
     """ set game clock """
@@ -88,13 +85,13 @@ def main():
                     """ this will need to be a pause menu instead of exit """
                     running = False
                 elif event.key == pygame.K_RIGHT:
-                    player1.vel.x = 10
+                    player1.vel.x = 20
                 elif event.key == pygame.K_LEFT:
-                    player1.vel.x = -10
+                    player1.vel.x = -20
                 elif event.key == pygame.K_UP:
-                    player1.vel.y = -10
+                    player1.vel.y = -20
                 elif event.key == pygame.K_DOWN:
-                    player1.vel.y = 10
+                    player1.vel.y = 20
             elif event.type == KEYUP:
                 if event.key == pygame.K_RIGHT and player1.vel.x > 0:
                     player1.vel.x = 0
@@ -121,7 +118,6 @@ def main():
         all_sprites.update()
         """ draw screen and update display """
         screen.blit(background.surf, background.rect)
-        # screen.blit(test_track, (0, 0))
         for sprite in all_sprites:
             screen.blit(sprite.image, sprite.rect.topleft+player1.camera)
         """ collision detection and handling """   
