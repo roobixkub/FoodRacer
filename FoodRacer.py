@@ -9,6 +9,7 @@ Created on Fri Jul 10 13:12:26 2020
 """ general imports """
 import os
 import pygame
+import pygame_menu
 from pygame.locals import (
     K_UP,
     K_DOWN,
@@ -22,8 +23,11 @@ from pygame.locals import (
 
 
 """ global variables """
-RACERS = {'BANANA': 'bananaman.png'}
-BACKGROUNDS = {'CANDY': 'candymap.png'}
+RACERS = [('BANANA', 'bananaman.png'), ('APPLE', 'appleguy.png')]
+LEVELS = [('CANDY', 'candymap.png'), ('BATHROOM', 'toiletpaper.png')]
+
+racer = RACERS[0][1]
+level = LEVELS[0][1]
 
 """ unique imports """
 from Config import SCREEN_WIDTH, SCREEN_HEIGHT
@@ -38,8 +42,9 @@ class Background(pygame.sprite.Sprite):
         self.surf = surface
         self.rect = self.surf.get_rect(topleft=location)
         
+        
 """ main game function """
-def main():
+def play_game():
     """ initialize the screen """
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pygame.display.set_caption('Food Racer')
@@ -50,7 +55,8 @@ def main():
     
     """ set background """
     background = pygame.Surface((13000, 13000))
-    background_tile = pygame.image.load(os.path.join('data', BACKGROUNDS['CANDY']))
+    background_tile = pygame.image.load(os.path.join('data', level))
+    background_tile = pygame.transform.scale(background_tile,(1300,1300))
     background_tile = background_tile.convert()
     
     for y in range(0, 13000, 1300):
@@ -64,11 +70,11 @@ def main():
 
     """ create sprite groups """
     all_sprites = pygame.sprite.Group()
-    for track in Track.Build_test()[1]:
+    for track in Track.Build_track()[1]:
         all_sprites.add(track)
     
     """ create racers """
-    player1 = Racers.Player(RACERS['BANANA'], (SCREEN_WIDTH/2, SCREEN_HEIGHT/2), Track.Build_test()[1], all_sprites)
+    player1 = Racers.Player(racer, (SCREEN_WIDTH/2, SCREEN_HEIGHT/2), Track.Build_track()[1], all_sprites)
     
     """ set game clock """
     clock = pygame.time.Clock()
@@ -82,7 +88,6 @@ def main():
         for event in pygame.event.get():
             if event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
-                    """ this will need to be a pause menu instead of exit """
                     running = False
                 elif event.key == pygame.K_RIGHT:
                     player1.vel.x = 20
@@ -127,16 +132,31 @@ def main():
         #       """ this will need a game over screen instead """
         #       running = False
         pygame.display.flip()
+
+pygame.init()
+os.environ['SDL_VIDEO_CENTERED'] = '1'
+surface = pygame.display.set_mode((600, 800))   
+
+def player_select(selected, value):
+    global racer 
+    racer = value
+
+def level_select(selected, value):
+    global level
+    level = value
+
+menu = pygame_menu.Menu(height=600,
+                        width=400,
+                        theme=pygame_menu.themes.THEME_BLUE,
+                        title='Food Racer!')
+
+menu.add_text_input('Name: ')
+menu.add_selector('Racer: ', RACERS, onchange=player_select)
+menu.add_selector('Level: ', LEVELS, onchange=level_select)
+menu.add_button('Play', play_game)
+menu.add_button('Quit', pygame_menu.events.EXIT)
+
     
-
-
-
-
-   
-
-
     
 if __name__ == '__main__': 
-    pygame.init()
-    main()
-    pygame.quit()
+    menu.mainloop(surface)

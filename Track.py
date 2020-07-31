@@ -76,7 +76,7 @@ class Bottom_Horiz_track(pygame.sprite.Sprite):
         self.image = pygame.transform.rotate(self.image,270)
         self.rect = self.image.get_rect(topleft = (x, y+500))
 
-def Build_test():
+def Build_track():
     test_track = [
             [Right_turn_up, Top_Horiz_track, Top_Horiz_track, Top_Horiz_track, Top_Horiz_track, Top_Horiz_track, Top_Horiz_track, Left_turn_up, None, None], 
             [Left_Vert_track, None, None, None, None, None, None, Right_Vert_track, None, None], 
