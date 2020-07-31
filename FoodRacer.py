@@ -24,7 +24,7 @@ from pygame.locals import (
 
 """ global variables """
 RACERS = [('BANANA', 'bananaman.png'), ('APPLE', 'appleguy.png')]
-LEVELS = [('CANDY', 'candymap.png'), ('BATHROOM', 'toiletpaper.png')]
+LEVELS = [('CANDY', 'candymap.png'), ('BATHROOM', 'bathroommap.png')]
 
 racer = RACERS[0][1]
 level = LEVELS[0][1]
